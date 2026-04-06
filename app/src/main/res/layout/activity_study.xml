@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thẻ 1/10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:id="@+id/layoutContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txtWordStudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Word"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="#111827" />
+
+        <TextView
+            android:id="@+id/txtMeaningStudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nghĩa của từ"
+            android:textSize="22sp"
+            android:textColor="#374151"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/btnShowMeaning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hiện nghĩa"
+            android:layout_marginTop="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btnHard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Khó"
+                android:backgroundTint="#EF4444"
+                android:layout_marginEnd="10dp" />
+
+            <Button
+                android:id="@+id/btnEasy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dễ"
+                android:backgroundTint="#22C55E" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Tốt, bạn đã hoàn thành ôn tập!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#16A34A"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnGoHomeStudy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quay về trang chủ"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp" />
+
+</RelativeLayout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEF6FF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBackHomeVocabulary"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_revert"
+            android:background="#663B82F6"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tra Từ Điển"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#123C7A"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/edtSearchWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập từ tiếng Anh"
+            android:textColor="#000000"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/btnSearchWord"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Tra từ"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#2F7CFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tvResultWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Từ: ---"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#123C7A" />
+
+            <TextView
+                android:id="@+id/tvResultMeaning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nghĩa: ---"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/btnAddToStudy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thêm vào ôn tập"
+                android:enabled="false"
+                android:layout_marginTop="14dp"
+                android:backgroundTint="#16A34A" />
+
+            <Button
+                android:id="@+id/btnGoHomeVocabulary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quay về trang chủ"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#9CA3AF" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

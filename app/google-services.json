@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "21685790151",
+    "project_id": "flashcardapp-47289",
+    "storage_bucket": "flashcardapp-47289.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21685790151:android:bc07ab5e0dd6d0910a65e2",
+        "android_client_info": {
+          "package_name": "com.example.flashcardapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlWTY457el_Wg_fHeKxrM4nH_P3RAN9Rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
