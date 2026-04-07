@@ -2,7 +2,7 @@ package com.example.flashcardapp.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+// Bảng dữ liệu (Table) lưu trữ các thẻ Flashcard trong Room Database
 @Entity(tableName = "flashcards")
 data class Flashcard(
     @PrimaryKey val word: String,

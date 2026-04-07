@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flashcardapp.R
-
+// Màn hình chính của ứng dụng: Hiển thị danh sách toàn bộ từ vựng
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
