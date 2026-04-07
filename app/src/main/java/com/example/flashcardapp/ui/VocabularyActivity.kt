@@ -114,3 +114,4 @@ class VocabularyActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         super.onDestroy()
     }
 }
+// final commit
