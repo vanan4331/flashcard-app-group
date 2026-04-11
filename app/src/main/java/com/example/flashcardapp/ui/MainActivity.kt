@@ -15,7 +15,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val btnGoal = findViewById<Button>(R.id.btnGoal)
 
+        btnGoal.setOnClickListener {
+            startActivity(Intent(this, GoalActivity::class.java))
+        }
         // 1. Khởi tạo Kênh thông báo (Bắt buộc cho Android 8.0 trở lên)
         createNotificationChannel()
 
