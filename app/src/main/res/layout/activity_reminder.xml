@@ -64,22 +64,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:id="@+id/tvPercent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mức độ hoàn thiện mục tiêu: 50%"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="8dp" />
-
-        <SeekBar
-            android:id="@+id/seekBarPercent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="50" />
-
         <Button
             android:id="@+id/btnSaveReminder"
             android:layout_width="match_parent"

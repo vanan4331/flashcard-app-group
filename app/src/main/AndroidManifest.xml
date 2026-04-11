@@ -15,28 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlashcardApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.GoalActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.VocabularyActivity"
             android:exported="false"
-            android:label="Tra từ điển" />
-
-        <!-- 🔥 SỬA Ở ĐÂY -->
+            android:label="Tra từ điển" /> <!-- 🔥 SỬA Ở ĐÂY -->
         <activity
             android:name=".ui.StudyActivity"
             android:exported="false"
             android:label="Ôn tập thẻ"
             android:parentActivityName=".ui.MainActivity" />
-
         <activity
             android:name=".ui.ReminderActivity"
             android:exported="false"
@@ -46,7 +45,6 @@
             android:name="com.google.firebase.components.ComponentDiscoveryService"
             android:exported="false"
             tools:node="merge" />
-
     </application>
 
 </manifest>
