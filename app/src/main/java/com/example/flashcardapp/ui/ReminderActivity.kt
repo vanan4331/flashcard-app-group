@@ -18,9 +18,10 @@ import java.util.concurrent.TimeUnit
 
 class ReminderActivity : AppCompatActivity() {
 
-    private var selectedCal = Calendar.getInstance()
-    private lateinit var tvHistory: TextView
     private lateinit var db: AppDatabase
+    private lateinit var tvHistory: TextView
+
+    private var selectedCal = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,22 +30,15 @@ class ReminderActivity : AppCompatActivity() {
         db = AppDatabase.getDatabase(this)
 
         tvHistory = findViewById(R.id.tvHistory)
+
         val tvInfoDate = findViewById<TextView>(R.id.tvSelectedDate)
         val tvInfoTime = findViewById<TextView>(R.id.tvSelectedTime)
 
-        // 🔥 Load lịch lần đầu
-        loadSchedule()
+        // 🔙 back
+        findViewById<ImageButton>(R.id.btnBackHomeReminder).setOnClickListener { finish() }
+        findViewById<Button>(R.id.btnGoHomeReminder).setOnClickListener { finish() }
 
-        // Nút quay về
-        findViewById<ImageButton>(R.id.btnBackHomeReminder).setOnClickListener {
-            finish()
-        }
-
-        findViewById<Button>(R.id.btnGoHomeReminder).setOnClickListener {
-            finish()
-        }
-
-        // Chọn ngày
+        // 📅 chọn ngày
         findViewById<Button>(R.id.btnPickDate).setOnClickListener {
             DatePickerDialog(this, { _, y, m, d ->
                 selectedCal.set(y, m, d)
@@ -52,7 +46,7 @@ class ReminderActivity : AppCompatActivity() {
             }, 2026, 3, 5).show()
         }
 
-        // Chọn giờ
+        // ⏰ chọn giờ
         findViewById<Button>(R.id.btnPickTime).setOnClickListener {
             TimePickerDialog(this, { _, h, m ->
                 selectedCal.set(Calendar.HOUR_OF_DAY, h)
@@ -61,21 +55,19 @@ class ReminderActivity : AppCompatActivity() {
             }, 12, 0, true).show()
         }
 
-        // 🔥 Lưu nhắc nhở
+        // 💾 SAVE
         findViewById<Button>(R.id.btnSaveReminder).setOnClickListener {
 
             val delay = selectedCal.timeInMillis - System.currentTimeMillis()
 
             if (delay > 0) {
 
-                // 1. WorkManager
                 val request = OneTimeWorkRequestBuilder<ReminderWorker>()
                     .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                     .build()
 
                 WorkManager.getInstance(this).enqueue(request)
 
-                // 2. Lưu snapshot từ vựng
                 CoroutineScope(Dispatchers.IO).launch {
 
                     val wordsList = db.flashcardDao()
@@ -94,7 +86,6 @@ class ReminderActivity : AppCompatActivity() {
                         )
                     )
 
-                    // 🔥 Load lại lịch sau khi lưu
                     withContext(Dispatchers.Main) {
                         loadSchedule()
                     }
@@ -103,30 +94,7 @@ class ReminderActivity : AppCompatActivity() {
                 Toast.makeText(this, "Đã hẹn giờ học!", Toast.LENGTH_SHORT).show()
 
             } else {
-                Toast.makeText(this, "Vui lòng chọn thời gian ở tương lai!", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    // 🔥 HÀM LOAD LỊCH
-    private fun loadSchedule() {
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val list = db.scheduleDao().getAll()
-
-            val text = if (list.isEmpty()) {
-                "Chưa có lịch học"
-            } else {
-                list.joinToString("\n\n") {
-                    val time = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
-                        .format(Date(it.time))
-
-                    "🕒 $time\n📚 Từ: ${it.words}"
-                }
-            }
-
-            withContext(Dispatchers.Main) {
-                tvHistory.text = text
+                Toast.makeText(this, "Chọn thời gian tương lai!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -135,5 +103,30 @@ class ReminderActivity : AppCompatActivity() {
         super.onResume()
         loadSchedule()
     }
+
+    // 📚 LOAD LỊCH
+    private fun loadSchedule() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val list = db.scheduleDao().getAll()
+
+            val result = if (list.isEmpty()) {
+                "Chưa có lịch học"
+            } else {
+                list.joinToString("\n\n") { item ->
+
+                    val time = SimpleDateFormat(
+                        "dd/MM HH:mm",
+                        Locale.getDefault()
+                    ).format(Date(item.time))
+
+                    "🕒 $time\n📚 Từ: ${item.words}"
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                tvHistory.text = result
+            }
+        }
+    }
 }
-//test2
