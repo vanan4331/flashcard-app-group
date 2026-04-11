@@ -17,7 +17,7 @@ interface FlashcardDao {
     // ✅ Thêm flashcard
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(flashcard: Flashcard)
-
+    //An đã kiểm tra code ở đây
     // ✅ Cập nhật flashcard
     @Update
     suspend fun update(flashcard: Flashcard)

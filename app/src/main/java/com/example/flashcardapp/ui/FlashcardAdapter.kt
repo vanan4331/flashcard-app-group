@@ -15,7 +15,7 @@ class FlashcardAdapter(private val cards: List<Flashcard>) :
         val txtWord: TextView = view.findViewById(R.id.txtVietnamese)
         val txtDef: TextView = view.findViewById(R.id.txtEnglish)
     }
-
+    // Adapter đóng vai trò cầu nối: Đưa dữ liệu Flashcard từ Database lên giao diện RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_flashcard, parent, false)
