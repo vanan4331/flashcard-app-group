@@ -1,34 +1,34 @@
 package com.example.flashcardapp.ui
 
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flashcardapp.R
 import com.example.flashcardapp.data.AppDatabase
 import com.example.flashcardapp.data.Flashcard
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import kotlin.math.roundToInt
-import android.content.Intent
-import com.example.flashcardapp.ui.MainActivity
+import java.text.SimpleDateFormat
+import java.util.*
+
 class StudyActivity : AppCompatActivity() {
 
     private lateinit var db: AppDatabase
     private var studyList = mutableListOf<Flashcard>()
     private var currentIndex = 0
 
+    private lateinit var frontCard: View
+    private lateinit var backCard: View
+    private lateinit var txtVietnamese: TextView
+    private lateinit var txtEnglish: TextView
+    private lateinit var cardContainer: View
+    private var isFront = true
+
     private lateinit var layoutContent: LinearLayout
-    private lateinit var txtWord: TextView
-    private lateinit var txtMeaning: TextView
     private lateinit var txtStatus: TextView
     private lateinit var txtCount: TextView
-    private lateinit var btnShow: Button
     private lateinit var btnEasy: Button
     private lateinit var btnHard: Button
 
@@ -40,33 +40,75 @@ class StudyActivity : AppCompatActivity() {
         initViews()
         loadFlashcards()
 
-        // Xử lý quay về trang chủ: finish() sẽ đóng activity hiện tại
-        // và quay lại màn hình gọi nó (thường là MainActivity)
+        fun pressAnim(view: View) {
+            view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100)
+                .withEndAction {
+                    view.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }.start()
+        }
+
+        btnEasy.setOnClickListener {
+            pressAnim(btnEasy)
+            saveLearnedWord(studyList[currentIndex].word) // 🔥 FIX CHÍNH
+            processSM2(5)
+        }
+
+        btnHard.setOnClickListener {
+            pressAnim(btnHard)
+            saveLearnedWord(studyList[currentIndex].word) // 🔥 FIX CHÍNH
+            processSM2(2)
+        }
+
+        val scale = resources.displayMetrics.density
+        cardContainer.cameraDistance = 8000 * scale
+
+        cardContainer.setOnClickListener {
+            if (isFront) {
+                frontCard.animate().rotationY(90f).setDuration(200)
+                    .withEndAction {
+                        frontCard.visibility = View.GONE
+                        backCard.visibility = View.VISIBLE
+                        backCard.rotationY = -90f
+                        backCard.animate().rotationY(0f).setDuration(200).start()
+                    }.start()
+            } else {
+                backCard.animate().rotationY(90f).setDuration(200)
+                    .withEndAction {
+                        backCard.visibility = View.GONE
+                        frontCard.visibility = View.VISIBLE
+                        frontCard.rotationY = -90f
+                        frontCard.animate().rotationY(0f).setDuration(200).start()
+                    }.start()
+            }
+            isFront = !isFront
+        }
+
         findViewById<Button>(R.id.btnGoHomeStudy)?.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-
-        btnShow.setOnClickListener {
-            txtMeaning.visibility = View.VISIBLE
-            btnShow.visibility = View.GONE
-        }
-
-        btnEasy.setOnClickListener { processSM2(5) }
-        btnHard.setOnClickListener { processSM2(2) }
     }
 
-    private fun initViews() {
-        layoutContent = findViewById(R.id.layoutContent)
-        txtWord = findViewById(R.id.txtWordStudy)
-        txtMeaning = findViewById(R.id.txtMeaningStudy)
-        txtStatus = findViewById(R.id.txtStatus)
-        txtCount = findViewById(R.id.tvCount)
-        btnShow = findViewById(R.id.btnShowMeaning)
-        btnEasy = findViewById(R.id.btnEasy)
-        btnHard = findViewById(R.id.btnHard)
+    // 🔥 HÀM QUAN TRỌNG NHẤT (KHÔNG TRÙNG + RESET NGÀY)
+    private fun saveLearnedWord(word: String) {
+        val sharedPref = getSharedPreferences("GoalData", MODE_PRIVATE)
+
+        val today = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+        val savedDate = sharedPref.getString("date", "")
+
+        val set = if (today == savedDate) {
+            sharedPref.getStringSet("learned_words", mutableSetOf())?.toMutableSet()
+                ?: mutableSetOf()
+        } else {
+            mutableSetOf() // 🔥 ngày mới → reset
+        }
+
+        set.add(word) // 🔥 không trùng
+
+        sharedPref.edit()
+            .putString("date", today)
+            .putStringSet("learned_words", set)
+            .apply()
     }
 
     private fun loadFlashcards() {
@@ -87,10 +129,18 @@ class StudyActivity : AppCompatActivity() {
     private fun showCurrentCard() {
         if (currentIndex < studyList.size) {
             val card = studyList[currentIndex]
-            txtWord.text = card.word
-            txtMeaning.text = card.definition
-            txtMeaning.visibility = View.INVISIBLE
-            btnShow.visibility = View.VISIBLE
+
+            txtVietnamese.text = card.word
+            txtEnglish.text = card.definition
+
+            frontCard.visibility = View.VISIBLE
+            backCard.visibility = View.GONE
+
+            frontCard.rotationY = 0f
+            backCard.rotationY = 0f
+
+            isFront = true
+
             txtCount.text = "Thẻ ${currentIndex + 1}/${studyList.size}"
         } else {
             showFinishedState()
@@ -127,16 +177,29 @@ class StudyActivity : AppCompatActivity() {
     }
 
     private fun showFinishedState() {
-        layoutContent.visibility = View.GONE
-        txtStatus.visibility = View.VISIBLE
-        txtStatus.text = "Tốt, bạn đã hoàn thành ôn tập!"
-        txtCount.text = "Hoàn thành!"
+        layoutContent.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .withEndAction {
+                layoutContent.visibility = View.GONE
+                txtStatus.visibility = View.VISIBLE
+                txtStatus.alpha = 0f
+                txtStatus.animate().alpha(1f).setDuration(500).start()
+            }.start()
+    }
 
-        txtStatus.postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }, 1500)
+    private fun initViews() {
+        cardContainer = findViewById(R.id.cardContainer)
+        frontCard = findViewById(R.id.frontCard)
+        backCard = findViewById(R.id.backCard)
+        txtVietnamese = findViewById(R.id.txtVietnamese)
+        txtEnglish = findViewById(R.id.txtEnglish)
+
+        layoutContent = findViewById(R.id.layoutContent)
+        txtStatus = findViewById(R.id.txtStatus)
+        txtCount = findViewById(R.id.tvCount)
+
+        btnEasy = findViewById(R.id.btnEasy)
+        btnHard = findViewById(R.id.btnHard)
     }
 }

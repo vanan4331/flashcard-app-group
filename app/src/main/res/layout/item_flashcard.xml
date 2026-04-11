@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_marginTop="40dp"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/txtItemWord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#123C7A" />
+    <!-- Mặt trước -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/frontCard"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="20dp"
 
-    <TextView
-        android:id="@+id/txtItemDef"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="#444444"
-        android:layout_marginTop="4dp" />
-</LinearLayout>
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/txtVietnamese"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"/>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Mặt sau -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/backCard"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        app:cardCornerRadius="20dp"
+
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/txtEnglish"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="16dp"/>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
