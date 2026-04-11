@@ -53,3 +53,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+// Main UI and navigation handled by An
