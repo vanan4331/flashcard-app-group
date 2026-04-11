@@ -12,8 +12,8 @@ class FlashcardAdapter(private val cards: List<Flashcard>) :
     RecyclerView.Adapter<FlashcardAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val txtWord: TextView = view.findViewById(R.id.txtItemWord)
-        val txtDef: TextView = view.findViewById(R.id.txtItemDef)
+        val txtWord: TextView = view.findViewById(R.id.txtVietnamese)
+        val txtDef: TextView = view.findViewById(R.id.txtEnglish)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -4,7 +4,8 @@ import androidx.room.*
 
 @Dao
 interface FlashcardDao {
-
+    @Query("SELECT COUNT(*) FROM flashcards WHERE repetition > 0")
+    fun getLearnedCount(): Int
     // ✅ Lấy tất cả flashcard
     @Query("SELECT * FROM Flashcards")
     suspend fun getAll(): List<Flashcard>
